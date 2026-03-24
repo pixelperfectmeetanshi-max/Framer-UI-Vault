@@ -1,0 +1,27 @@
+{
+  "name": "Framer UI Vault",
+  "description": "A premium collection of reusable UI components for Framer. Browse and insert pre-built components like Navbars, Features, Pricing, Testimonials, and Ecommerce sections.",
+  "author": "Meetanshi",
+  "authorEmail": "hep@meetanshi.com",
+  "authorUrl": "https://yourwebsite.com",
+  "version": "1.0.0",
+  "icon": "icon.png",
+  "homepage": "https://meetanshi.com/",
+  "repository": {
+    "type": "vercel",
+    "url": "https://vercel.com/pixelperfectmeetanshi-4203s-projects/framer-ui-vault"
+  },
+  "keywords": [
+    "ui-components",
+    "framer",
+    "design-system",
+    "navbar",
+    "features",
+    "pricing",
+    "testimonials",
+    "ecommerce"
+  ],
+  "permissions": [
+    "framer.addFrame"
+  ]
+}
