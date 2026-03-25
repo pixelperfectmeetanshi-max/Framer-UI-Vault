@@ -11,7 +11,7 @@ import { useKeyboardShortcuts } from "./hooks";
 import { useApp } from "./contexts/AppContext";
 import { useThemeColor } from "./contexts/ThemeColorContext";
 import { components } from "./data";
-import { themes, type Theme } from "./theme";
+import { themes, getFramerTheme, type Theme } from "./theme";
 import type { ComponentItem } from "./types";
 
 // Threshold for using virtualized grid (Requirement 5.5)
@@ -28,7 +28,8 @@ export default function App({ onInsert }: { onInsert: (item: ComponentItem) => v
   const [searchQuery, setSearchQuery] = useState("");
   // Track the previous category before search (Requirement 8.6)
   const [previousCategory, setPreviousCategory] = useState("All");
-  const [theme, setTheme] = useState<Theme>("light");
+  // Use Framer's theme detection instead of local toggle
+  const [theme, setTheme] = useState<Theme>(() => getFramerTheme());
   const [isThemeSettingsOpen, setIsThemeSettingsOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -70,12 +71,29 @@ export default function App({ onInsert }: { onInsert: (item: ComponentItem) => v
     onClearSelection: handleClearSelection,
   });
 
-  // ✅ Load theme from localStorage
+  // ✅ Listen for Framer theme changes (via CSS media query and class changes)
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
+    // Initial theme detection
+    setTheme(getFramerTheme());
+    
+    // Listen for system preference changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => setTheme(getFramerTheme());
+    mediaQuery.addEventListener('change', handleChange);
+    
+    // Also observe class changes on document element for Framer's theme class
+    const observer = new MutationObserver(() => {
+      setTheme(getFramerTheme());
+    });
+    observer.observe(document.documentElement, { 
+      attributes: true, 
+      attributeFilter: ['class'] 
+    });
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+      observer.disconnect();
+    };
   }, []);
 
   // ✅ Track container dimensions for virtualized grid
@@ -95,13 +113,6 @@ export default function App({ onInsert }: { onInsert: (item: ComponentItem) => v
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
-
-  // ✅ Toggle theme
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
 
   const colors = themes[theme];
 
@@ -267,7 +278,7 @@ export default function App({ onInsert }: { onInsert: (item: ComponentItem) => v
         >
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <h1 style={{ ...styles.title, color: colors.textPrimary }}>
-              Framer UI Vault
+              UI Vault
             </h1>
 
             {/* SEARCH - Requirement 8.1, 8.5: SearchInput with real-time filtering and clear button */}
@@ -326,36 +337,6 @@ export default function App({ onInsert }: { onInsert: (item: ComponentItem) => v
                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
               </svg>
             </button>
-
-            {/* THEME TOGGLE - Requirement 7.1: aria-label on interactive elements */}
-            <button
-              onClick={toggleTheme}
-              aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"}
-              style={{
-                ...styles.themeToggle,
-                background: colors.background,
-                color: colors.textPrimary,
-                borderColor: colors.border,
-              }}
-            >
-            {theme === "light" ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-              </svg>
-            )}
-          </button>
           </div>
         </header>
 
@@ -373,7 +354,7 @@ export default function App({ onInsert }: { onInsert: (item: ComponentItem) => v
             padding: "12px 16px",
             marginBottom: "24px",
             borderRadius: "8px",
-            background: theme === "light" ? "#F1F5F9" : "#1E293B",
+            background: "var(--framer-color-bg-tertiary, #F1F5F9)",
             border: `1px solid ${colors.border}`,
             color: colors.textSecondary,
             fontSize: "13px",

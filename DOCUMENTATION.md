@@ -1,8 +1,8 @@
-# Framer UI Vault - User Documentation
+# UI Vault - User Documentation
 
-## What is Framer UI Vault?
+## What is UI Vault?
 
-Framer UI Vault is a premium plugin for Framer that provides a library of pre-built, fully editable UI components. Instead of building layouts from scratch, simply browse, preview, and insert professional components directly into your Framer canvas.
+UI Vault is a premium plugin for Framer that provides a library of pre-built, fully editable UI components. Instead of building layouts from scratch, simply browse, preview, and insert professional components directly into your Framer canvas.
 
 ---
 
@@ -11,11 +11,11 @@ Framer UI Vault is a premium plugin for Framer that provides a library of pre-bu
 ### Installation
 1. Open your Framer project
 2. Go to **Plugins** in the toolbar
-3. Search for "Framer UI Vault" or install from the plugin marketplace
+3. Search for "UI Vault" or install from the plugin marketplace
 4. Click **Install**
 
 ### Opening the Plugin
-- Click the **Framer UI Vault** icon in your plugins panel
+- Click the **UI Vault** icon in your plugins panel
 - Or use the keyboard shortcut (if configured)
 
 ---

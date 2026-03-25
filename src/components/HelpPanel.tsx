@@ -174,7 +174,7 @@ export const HelpPanel: React.FC<HelpPanelProps> = ({ isOpen, onClose, theme }) 
           {/* Usage Instructions Section (Requirement 1.2) */}
           <Section title="Getting Started" theme={theme}>
             <p style={{ margin: '0 0 12px 0', lineHeight: 1.6, color: colors.textSecondary }}>
-              Framer UI Vault provides skeletal UI layouts that you can insert directly onto your Framer canvas.
+              UI Vault provides skeletal UI layouts that you can insert directly onto your Framer canvas.
             </p>
             <ol style={{ margin: 0, paddingLeft: 20, color: colors.textSecondary, lineHeight: 1.8 }}>
               <li>Browse components by category using the sidebar</li>

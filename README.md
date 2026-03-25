@@ -1,6 +1,6 @@
-# Framer UI Vault Plugin
+# UI Vault Plugin
 
-Framer UI Vault is a powerful and lightweight Framer plugin designed to supercharge your design workflow. It instantly provisions beautiful, meticulously structured, and fully responsive **Skeletal UI Layouts** directly into your Framer canvas.
+UI Vault is a powerful and lightweight plugin designed to supercharge your design workflow. It instantly provisions beautiful, meticulously structured, and fully responsive **Skeletal UI Layouts** directly into your Framer canvas.
 
 ## Key Features
 
@@ -12,7 +12,7 @@ Framer UI Vault is a powerful and lightweight Framer plugin designed to supercha
 
 ## How to Use
 
-1. Launch **Framer UI Vault** from the Plugins menu.
+1. Launch **UI Vault** from the Plugins menu.
 2. Select your category from the left Sidebar.
 3. Click "Insert" on any component card.
 4. The requested layout will be magically painted onto your explicit canvas context as a flawlessly scalable hierarchy of Native SVGs and Layout Frames.

@@ -1,9 +1,9 @@
 {
   "id": "uivaul",
-  "name": "Framer UI Vault",
+  "name": "UI Vault",
   "main": "https://framer-ui-vault-alpiljmn2-pixelperfectmeetanshi-4203s-projects.vercel.app",
   "version": "1.0.0",
-  "icon": "icon.png",
+  "icon": "./icon.png",
   "modes": ["canvas"],
   "permissions": [
     "framer.addFrame",

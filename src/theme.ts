@@ -3,36 +3,78 @@
  * Requirement 11.1: Use Framer's standard color palette for UI elements
  * Requirement 11.5: Support both light and dark themes matching Framer's appearance
  * 
- * Colors are based on Framer's official design language:
- * - Primary blues for interactive elements
- * - Neutral grays for backgrounds and borders
- * - Semantic colors for feedback states
+ * Uses Framer's built-in CSS variables that automatically adjust based on
+ * the light/dark mode setting in Framer:
+ * - --framer-color-bg: Background color
+ * - --framer-color-bg-secondary: Secondary background
+ * - --framer-color-bg-tertiary: Tertiary background
+ * - --framer-color-text: Primary text color
+ * - --framer-color-text-secondary: Secondary text
+ * - --framer-color-text-tertiary: Tertiary text
+ * - --framer-color-divider: Border/divider color
+ * - --framer-color-tint: Accent/tint color
+ */
+
+/**
+ * Helper to detect if we're in dark mode using Framer's CSS
+ * This checks the computed style of the document
+ */
+export function getFramerTheme(): Theme {
+  if (typeof window === 'undefined') return 'light';
+  
+  // Check if Framer's dark mode class is present
+  const isDark = document.documentElement.classList.contains('framer-dark') ||
+    window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  return isDark ? 'dark' : 'light';
+}
+
+/**
+ * Colors that use Framer's CSS variables for automatic theme switching
+ * These will automatically update when Framer's theme changes
+ */
+export const framerColors = {
+  // Use CSS variables directly - these auto-switch with Framer's theme
+  background: "var(--framer-color-bg, #ffffff)",
+  backgroundSecondary: "var(--framer-color-bg-secondary, #fafafa)",
+  backgroundTertiary: "var(--framer-color-bg-tertiary, #f5f5f5)",
+  text: "var(--framer-color-text, #1a1a1a)",
+  textSecondary: "var(--framer-color-text-secondary, #666666)",
+  textTertiary: "var(--framer-color-text-tertiary, #999999)",
+  divider: "var(--framer-color-divider, #e5e5e5)",
+  tint: "var(--framer-color-tint, #0099ff)",
+  tintDimmed: "var(--framer-color-tint-dimmed, #0077cc)",
+};
+
+/**
+ * Theme colors - kept for backward compatibility but now both themes
+ * use the same values since Framer handles the switching via CSS variables
  */
 export const themes = {
   light: {
     // Primary colors - Framer blue accent
-    primary: "#0099FF",
-    primaryHover: "#007ACC",
-    secondary: "#ffffff",
+    primary: "var(--framer-color-tint, #0099FF)",
+    primaryHover: "var(--framer-color-tint-dimmed, #007ACC)",
+    secondary: "var(--framer-color-bg, #ffffff)",
     
-    // Background colors - Framer light theme
-    background: "#ffffff",
-    foreground: "#1a1a1a",
-    sidebarBg: "#FAFAFA",
-    cardBg: "#F5F5F5",
+    // Background colors - using Framer CSS variables
+    background: "var(--framer-color-bg, #ffffff)",
+    foreground: "var(--framer-color-text, #1a1a1a)",
+    sidebarBg: "var(--framer-color-bg-secondary, #FAFAFA)",
+    cardBg: "var(--framer-color-bg-tertiary, #F5F5F5)",
     
-    // Border colors - Framer subtle borders
-    border: "#E5E5E5",
-    borderLight: "#EBEBEB",
+    // Border colors - Framer divider
+    border: "var(--framer-color-divider, #E5E5E5)",
+    borderLight: "var(--framer-color-divider, #EBEBEB)",
     
     // Text colors - Framer typography
-    textPrimary: "#1a1a1a",
-    textSecondary: "#666666",
-    textTertiary: "#999999",
+    textPrimary: "var(--framer-color-text, #1a1a1a)",
+    textSecondary: "var(--framer-color-text-secondary, #666666)",
+    textTertiary: "var(--framer-color-text-tertiary, #999999)",
     
-    // Interactive states - Framer hover/active
-    bgHover: "#F0F0F0",
-    bgActive: "#0099FF",
+    // Interactive states
+    bgHover: "var(--framer-color-bg-tertiary, #F0F0F0)",
+    bgActive: "var(--framer-color-tint, #0099FF)",
     textActive: "#ffffff",
     
     // Shadows - Framer elevation system
@@ -52,33 +94,33 @@ export const themes = {
     infoBorder: "#60A5FA",
     
     // Focus indicator - Framer accessibility
-    focusRing: "#0099FF",
-    focusRingOffset: "#ffffff",
+    focusRing: "var(--framer-color-tint, #0099FF)",
+    focusRingOffset: "var(--framer-color-bg, #ffffff)",
   },
   dark: {
-    // Primary colors - Framer blue accent (brighter for dark mode)
-    primary: "#0099FF",
-    primaryHover: "#33ADFF",
-    secondary: "#1a1a1a",
+    // Dark theme now uses the same CSS variables - Framer handles the switching
+    primary: "var(--framer-color-tint, #0099FF)",
+    primaryHover: "var(--framer-color-tint-dimmed, #33ADFF)",
+    secondary: "var(--framer-color-bg, #1a1a1a)",
     
-    // Background colors - Framer dark theme
-    background: "#111111",
-    foreground: "#ffffff",
-    sidebarBg: "#161616",
-    cardBg: "#1C1C1C",
+    // Background colors - using Framer CSS variables
+    background: "var(--framer-color-bg, #111111)",
+    foreground: "var(--framer-color-text, #ffffff)",
+    sidebarBg: "var(--framer-color-bg-secondary, #161616)",
+    cardBg: "var(--framer-color-bg-tertiary, #1C1C1C)",
     
-    // Border colors - Framer subtle borders (dark)
-    border: "#2A2A2A",
-    borderLight: "#222222",
+    // Border colors - Framer divider
+    border: "var(--framer-color-divider, #2A2A2A)",
+    borderLight: "var(--framer-color-divider, #222222)",
     
-    // Text colors - Framer typography (dark)
-    textPrimary: "#ffffff",
-    textSecondary: "#A0A0A0",
-    textTertiary: "#666666",
+    // Text colors - Framer typography
+    textPrimary: "var(--framer-color-text, #ffffff)",
+    textSecondary: "var(--framer-color-text-secondary, #A0A0A0)",
+    textTertiary: "var(--framer-color-text-tertiary, #666666)",
     
-    // Interactive states - Framer hover/active (dark)
-    bgHover: "#252525",
-    bgActive: "#0099FF",
+    // Interactive states
+    bgHover: "var(--framer-color-bg-tertiary, #252525)",
+    bgActive: "var(--framer-color-tint, #0099FF)",
     textActive: "#ffffff",
     
     // Shadows - Framer elevation system (dark)
@@ -97,9 +139,9 @@ export const themes = {
     infoText: "#60A5FA",
     infoBorder: "#2563EB",
     
-    // Focus indicator - Framer accessibility (dark)
-    focusRing: "#0099FF",
-    focusRingOffset: "#111111",
+    // Focus indicator - Framer accessibility
+    focusRing: "var(--framer-color-tint, #0099FF)",
+    focusRingOffset: "var(--framer-color-bg, #111111)",
   }
 };
 

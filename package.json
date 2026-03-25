@@ -1,5 +1,5 @@
 {
-  "name": "framer-ui-vault",
+  "name": "ui-vault",
   "version": "1.0.0",
   "type": "module",
   "description": "A premium UI component library plugin for Framer",
@@ -11,8 +11,8 @@
     "pack": "vite build && node scripts/pack.js"
   },
   "framer": {
-    "displayName": "Framer UI Vault",
-    "icon": "asset/icon.png",
+    "displayName": "UI Vault",
+    "icon": "./icon.png",
     "permissions": [
       "framer.addFrame",
       "framer.addSVG"

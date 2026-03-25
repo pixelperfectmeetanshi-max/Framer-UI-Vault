@@ -1,10 +1,30 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { copyFileSync, existsSync, mkdirSync } from "fs";
+import { resolve } from "path";
+
+// Plugin to copy icon.png to dist folder
+const copyIconPlugin = () => ({
+  name: 'copy-icon',
+  closeBundle() {
+    const src = resolve(__dirname, 'icon.png');
+    const destDir = resolve(__dirname, 'dist');
+    const dest = resolve(destDir, 'icon.png');
+    
+    if (existsSync(src)) {
+      if (!existsSync(destDir)) {
+        mkdirSync(destDir, { recursive: true });
+      }
+      copyFileSync(src, dest);
+      console.log('✓ Copied icon.png to dist/');
+    }
+  }
+});
 
 export default defineConfig({
   base: "./",
 
-  plugins: [react()],
+  plugins: [react(), copyIconPlugin()],
 
   build: {
     target: "esnext",
